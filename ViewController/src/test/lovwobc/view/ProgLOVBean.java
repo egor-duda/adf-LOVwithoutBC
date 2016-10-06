@@ -2,7 +2,6 @@ package test.lovwobc.view;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -15,10 +14,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 
-import oracle.adf.view.rich.component.UIXInputPopup;
-import oracle.adf.view.rich.context.AdfFacesContext;
-import oracle.adf.view.rich.event.ReturnPopupEvent;
-import oracle.adf.view.rich.event.LaunchPopupEvent;
 import oracle.adf.view.rich.model.AttributeCriterion;
 import oracle.adf.view.rich.model.AttributeDescriptor;
 import oracle.adf.view.rich.model.AutoSuggestUIHints;
@@ -29,8 +24,6 @@ import oracle.adf.view.rich.model.ListOfValuesModel;
 import oracle.adf.view.rich.model.QueryDescriptor;
 import oracle.adf.view.rich.model.QueryModel;
 import oracle.adf.view.rich.model.TableModel;
-import org.apache.myfaces.trinidad.event.SelectionEvent;
-import org.apache.myfaces.trinidad.component.UIXTable;
 import org.apache.myfaces.trinidad.model.CollectionModel;
 import org.apache.myfaces.trinidad.model.RowKeySet;
 import org.apache.myfaces.trinidad.model.RowKeySetImpl;
@@ -48,165 +41,40 @@ public class ProgLOVBean
         _filteredList.addAll(_values);
     }
 
-    UIXTable _table;
-
-    public void setTable(UIXTable table) {
-        _table = table;
+    private String _ename;
+    public void setEname(String ename) {
+        _ename = ename;
     }
     
-    public UIXTable getTable() {
-        return _table;
+    public String getEname() {
+        return _ename;
     }
 
-  private String _ename;
-  private String _ename1;
-  
-  public void setEname(String ename)
-  {
-    _ename = ename;
-  }
-
-  public String getEname()
-  {
-    return _ename;
-  }
-
-  Object _returnData;
-
-  public void setReturnData(Object value)
-  {
-    _returnData = value;
-  }
-
-  public Object getReturnData()
-  {
-    return "return value: " + getLovValue();
-  }
-
-  Object _lovValue;
-
-  public void setLovValue(Object value)
-  {
-    _lovValue = value;
-  }
-
-  public Object getLovValue()
-  {
-    return _lovValue;
-  }
-  
-  private Object returnPopupDataValue;
-  private Object returnPopupDataValue1;
-
-  public void setReturnPopupDataValue(Object returnPopupDataValue) 
-  {
-      this.returnPopupDataValue = returnPopupDataValue;
-  }
-
-  public Object getReturnPopupDataValue() 
-  {
-      return returnPopupDataValue;
-  }
-  
-  public void selected(SelectionEvent event)
-  {
-    setReturnPopupDataValue(event.getAddedSet());
-  }
-    
-  public void returnPopupListener(ReturnPopupEvent returnPopupEvent)
-  {
-    Object value = returnPopupEvent.getReturnValue();
-    if (value != null)
-    {
-      UIXInputPopup comp = (UIXInputPopup)returnPopupEvent.getComponent();
-      if (comp != null)
-      {
-        comp.resetValue();
-        AdfFacesContext.getCurrentInstance().addPartialTarget(comp);
-      }
-      FileData rowData = _getRowData(value);
-      if(rowData != null)
-      {
-        this.setValues(rowData);
-      }
-      else
-        this.setEname(value.toString());
-    }
-  }
-  
-  public void launchPopupListener(LaunchPopupEvent event)
-  {
-    Object submittedValue = event.getSubmittedValue();
-    filterList((String)submittedValue);
-    if (_filteredList.size() == 1)
-    {
-      FileData rowData = _filteredList.get(0);
-      if(rowData != null)
-      {
-        this.setValues(rowData);
-      }
-      else
-        this.setEname(submittedValue.toString());
-      
-      event.setLaunchPopup(false);
-      UIXInputPopup comp = (UIXInputPopup)event.getComponent();
-      if (comp != null)
-      {
-        comp.resetValue();
-        AdfFacesContext.getCurrentInstance().addPartialTarget(comp);
-      }
-    }
-  }
-  
-  public void inputReturnPopupListener(ReturnPopupEvent returnPopupEvent)
-  {
-    Object value = returnPopupEvent.getReturnValue();
-    if (value != null)
-    {
-      UIXInputPopup comp = (UIXInputPopup)returnPopupEvent.getComponent();
-      if (comp != null)
-      {
-        comp.resetValue();
-        AdfFacesContext.getCurrentInstance().addPartialTarget(comp);
-      }
-      this.setEname1(value.toString());
-    }
-  }
-
-  private void setValues(FileData rowData)
-  {
-    if ( rowData != null)
-    {
-      this.setEname(rowData.getEname());
-    }
-  }
-
-  private void filterList(String eName)
-  {
-    _filteredList.clear();
-    if (eName != null)
-    {
-      for (FileData data : _values)
-      {
-        if (data.getEname().startsWith(eName))
-        {
-          _filteredList.add(data);
+    public void setValues(FileData rowData) {
+        if ( rowData != null) {
+            setEname(rowData.getEname());
         }
-      }
     }
-  }
 
-  public CollectionModel getListModel()
-  {
-    return listModel;
-  }
+    public void filterList(String eName) {
+        _filteredList.clear();
+        if (eName == null) return;
+        for (FileData data : _values) {
+            if (data.getEname().startsWith(eName)) {
+                _filteredList.add(data);
+            }
+        }
+    }
 
-  public ListOfValuesModel getListOfValuesModel()
-  {
-    if(_listOfValuesModel == null)
-      _listOfValuesModel = new ListOfValuesModelImpl(this);
-    return _listOfValuesModel;
-  }
+    public CollectionModel getListModel() {
+        return listModel;
+    }
+
+    public ListOfValuesModel getListOfValuesModel() {
+        if(_listOfValuesModel == null)
+            _listOfValuesModel = new ListOfValuesModelImpl(this);
+        return _listOfValuesModel;
+    }
 
   private ListOfValuesModel _listOfValuesModel;
 
@@ -245,29 +113,17 @@ public class ProgLOVBean
     return null;
   }
 
-  public void setEname1(String _ename1) 
-  {
-    this._ename1 = _ename1;
-  }
+    public static List<String> getAttributes() {
+        return _attributes;
+    }
 
-  public String getEname1() 
-  {
-    return _ename1;
-  }
+    public List<ProgLOVBean.FileData> getFilteredList() {
+        return _filteredList;
+    }
 
-  public void setReturnPopupDataValue1(Object returnPopupDataValue1) 
-  {
-    this.returnPopupDataValue1 = returnPopupDataValue1;
-  }
-
-  public Object getReturnPopupDataValue1() 
-  {
-    return returnPopupDataValue1;
-  }
-
-  /**
-   * The CollectionModel implementation for the table in the Search popup
-   */
+    /**
+     * The CollectionModel implementation for the table in the Search popup
+     */
   class ListLovCollection
     extends CollectionModel
   {
