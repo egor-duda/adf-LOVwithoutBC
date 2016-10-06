@@ -2,8 +2,11 @@ package test.lovwobc.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+
+import java.util.Map;
 
 import oracle.adf.view.rich.model.AttributeCriterion;
 import oracle.adf.view.rich.model.ListOfValuesModel;
@@ -16,9 +19,12 @@ import org.apache.myfaces.trinidad.model.RowKeySetImpl;
 
 
 public class ListOfValuesModelImpl extends ListOfValuesModel {
+
+    private QueryDescriptor queryDescriptor;
+    private BeanLOV lov;    
     
-    public ListOfValuesModelImpl(ProgLOVBean bean) {
-        _bean = bean;
+    public ListOfValuesModelImpl(BeanLOV lov) {
+        this.lov = lov;
     }
     
     /**
@@ -27,7 +33,13 @@ public class ListOfValuesModelImpl extends ListOfValuesModel {
      */
     @Override
     public List<? extends Object> getItems() {
-        return Collections.emptyList();
+        ArrayList<Object> retVal = new ArrayList<Object> ();
+        for (SourceDataRow row: lov.getValues()) {
+            Map<String, Object> item = new HashMap<String, Object>(1);
+            item.put(lov.getAttributes().get(0), row.getValue());
+            retVal.add (item);
+        }
+        return retVal;
     }
 
     /**
@@ -45,32 +57,32 @@ public class ListOfValuesModelImpl extends ListOfValuesModel {
      */
     @Override
     public List<? extends Object> getRecentItems() {
-        return Collections.emptyList();
+        return new ArrayList<Object>();
     }
 
     @Override
     public TableModel getTableModel() {
-        return new TableModelImpl(_bean.getListModel());
+        return new TableModelImpl (lov.getListModel(), lov.getAttributes());
     }
 
     @Override
     public boolean isAutoCompleteEnabled() {
-        return false;
+        return true;
     }
 
     public void performQuery(QueryDescriptor qd) {
         AttributeCriterion criterion = (AttributeCriterion) qd.getConjunctionCriterion().getCriterionList().get(0);
-        String ename = (String) criterion.getValues().get(0);
-        _bean.filterList(ename);
+        String value = (String) criterion.getValues().get(0);
+        lov.filterList (value);
     }
 
     public List<Object> autoCompleteValue(Object value) {
         // wierd way of filtering and accessing _filteredList but for now its ok
-        _bean.filterList((String)value);
-        if (_bean.getFilteredList().size() == 1) {
+        lov.filterList((String)value);
+        if (lov.getFilteredList().size() == 1) {
             List<Object> returnList = new ArrayList<Object>();
-            EmpDataRow rowData = _bean.getFilteredList().get(0);
-            Object rowKey = rowData.getRowId();
+            SourceDataRow rowData = lov.getFilteredList().get(0);
+            Object rowKey = rowData.getId();
             RowKeySet rowKeySet = new RowKeySetImpl();
             rowKeySet.add(rowKey);
             returnList.add(rowKeySet);
@@ -81,30 +93,30 @@ public class ListOfValuesModelImpl extends ListOfValuesModel {
 
     @Override
     public void valueSelected(Object value) {
-        EmpDataRow rowData = _getRowData(value);
+        SourceDataRow rowData = getRowData(value);
         if(rowData != null) {
-            _bean.setSelectedValue(rowData);
+            lov.setSelectedValue(rowData);
         }
     }
 
     @Override
     public Object getValueFromSelection(Object selectedRowKey) {
-        EmpDataRow rowData = _getRowData(selectedRowKey);
+        SourceDataRow rowData = getRowData(selectedRowKey);
         if(rowData != null) {
-          return rowData.getEname();
+            return rowData.getValue();
         }
         return null;
     }
 
-    private EmpDataRow _getRowData(Object selectedRowKey) {
+    private SourceDataRow getRowData(Object selectedRowKey) {
         if (selectedRowKey != null && selectedRowKey instanceof RowKeySet) {
             Iterator<Object> selection = ((RowKeySet) selectedRowKey).iterator();
             while (selection.hasNext()) {
                 Object rowKey = selection.next();
-                Object oldRowKey = _bean.getListModel().getRowKey();
-                _bean.getListModel().setRowKey(rowKey);
-                EmpDataRow rowData = (EmpDataRow)_bean.getListModel().getRowData();
-                _bean.getListModel().setRowKey(oldRowKey);
+                Object oldRowKey = lov.getListModel().getRowKey();
+                lov.getListModel().setRowKey(rowKey);
+                SourceDataRow rowData = lov.getListModel().getRowData();
+                lov.getListModel().setRowKey(oldRowKey);
                 return rowData;
             }
         }
@@ -112,11 +124,8 @@ public class ListOfValuesModelImpl extends ListOfValuesModel {
     }
 
     public QueryDescriptor getQueryDescriptor() {
-        if(_queryDescriptor == null)
-            _queryDescriptor = new QueryDescriptorImpl();
-        return _queryDescriptor;
+        if(queryDescriptor == null) queryDescriptor = new QueryDescriptorImpl(lov.getAttributes().get(0));
+        return queryDescriptor;
     }
 
-    private QueryDescriptor _queryDescriptor;
-    private ProgLOVBean _bean;    
 }

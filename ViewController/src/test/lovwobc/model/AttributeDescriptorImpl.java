@@ -6,6 +6,13 @@ import java.util.Set;
 import oracle.adf.view.rich.model.AttributeDescriptor;
 
 public class AttributeDescriptorImpl extends AttributeDescriptor {
+    
+    private String label;
+
+    public AttributeDescriptorImpl(String label) {
+        super();
+        this.label = label;
+    }
 
     public AttributeDescriptor.ComponentType getComponentType() {
         return AttributeDescriptor.ComponentType.inputText;
@@ -20,7 +27,7 @@ public class AttributeDescriptorImpl extends AttributeDescriptor {
     }
 
     public String getLabel() {
-        return "Ename";
+        return label;
     }
 
     public int getLength() {

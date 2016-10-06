@@ -3,15 +3,18 @@
 <f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
     <af:document title="main.jsf" id="d1">
         <af:form id="f1">
-            <af:inputListOfValues label="Label 1" popupTitle="Search and Result Dialog" id="ilov1"
-                                  model="#{viewScope.progLOVBean.listOfValuesModel}"
-                                  value="#{viewScope.progLOVBean.ename}"
-                                  validator="#{viewScope.progLOVBean.validate}" autoSubmit="true">
-                <af:autoSuggestBehavior suggestedItems="#{viewScope.progLOVBean.suggestedItems}"/>
+            <af:inputListOfValues label="Employee" popupTitle="Search and Result Dialog" id="ilov1"
+                                  model="#{viewScope.mainBean.empNameLOV.listOfValuesModel}"
+                                  value="#{viewScope.mainBean.empName}"
+                                  validator="#{viewScope.mainBean.empNameLOV.validate}" autoSubmit="true">
+                <af:autoSuggestBehavior suggestedItems="#{viewScope.mainBean.empNameLOV.suggestedItems}"/>
             </af:inputListOfValues>
-            <af:selectOneChoice label="Label 1" id="soc1">
-                <f:selectItems value="#{viewScope.progLOVBean.items}" id="si1"/>
-            </af:selectOneChoice>
+            <af:inputComboboxListOfValues label="Department" popupTitle="Search and Result Dialog" id="ilov2"
+                                  model="#{viewScope.mainBean.deptNameLOV.listOfValuesModel}"
+                                  value="#{viewScope.mainBean.deptName}"
+                                  validator="#{viewScope.mainBean.deptNameLOV.validate}" autoSubmit="true">
+                <af:autoSuggestBehavior suggestedItems="#{viewScope.mainBean.deptNameLOV.suggestedItems}"/>
+            </af:inputComboboxListOfValues>
             <af:commandButton text="commandButton 1" id="cb1"/>
         </af:form>
     </af:document>

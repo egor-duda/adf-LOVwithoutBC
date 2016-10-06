@@ -9,27 +9,30 @@ import oracle.adf.view.rich.model.TableModel;
 import org.apache.myfaces.trinidad.model.CollectionModel;
 
 public class TableModelImpl extends TableModel {
-    public TableModelImpl(CollectionModel collectionModel) {
+    
+    private List<String> attributes;
+    private CollectionModel collectionModel;
+    private List<ColumnDescriptor> descriptors;
+    
+    public TableModelImpl(CollectionModel collectionModel, List<String> attributes) {
         assert (collectionModel != null);
-        _collectionModel = collectionModel;
+        this.attributes = attributes;
+        this.collectionModel = collectionModel;
     }
 
     @Override
     public CollectionModel getCollectionModel() {
-        return _collectionModel;
+        return collectionModel;
     }
 
     @Override
     public List<ColumnDescriptor> getColumnDescriptors() {
-        if (_descriptors == null) {
-            _descriptors = new ArrayList<ColumnDescriptor>(ProgLOVBean.getAttributes().size());
-            for (String attr : ProgLOVBean.getAttributes()) {
-                _descriptors.add(new ColumnDescriptorImpl(attr));
+        if (descriptors == null) {
+            descriptors = new ArrayList<ColumnDescriptor>(attributes.size());
+            for (String attr : attributes) {
+                descriptors.add(new ColumnDescriptorImpl(attr));
             }
         }
-        return _descriptors;
+        return descriptors;
     }
-
-    private CollectionModel _collectionModel;
-    private static List<ColumnDescriptor> _descriptors;
 }

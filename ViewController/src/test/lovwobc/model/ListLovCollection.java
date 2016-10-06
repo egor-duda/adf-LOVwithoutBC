@@ -6,17 +6,17 @@ import java.util.List;
 import org.apache.myfaces.trinidad.model.CollectionModel;
 
 class ListLovCollection extends CollectionModel {
-    private final ProgLOVBean bean;
+    private final BeanLOV lov;
+    
+    private SourceDataRow row = null;
+    private int rowIndex = -1;
 
-    ListLovCollection(ProgLOVBean bean) {
-        this.bean = bean;
+    ListLovCollection(BeanLOV beanLOV) {
+        this.lov = beanLOV;
     }
 
     public Object getRowKey() {
-        if (_row != null) {
-            return _row.getRowId();
-        }
-        return null;
+        return (row != null ? row.getId() : null);
     }
 
     /**
@@ -25,53 +25,52 @@ class ListLovCollection extends CollectionModel {
      */
     public void setRowKey(Object rowKey) {
         if (rowKey == null) {
-            _row = null;
+            row = null;
             return;
         }
 
         int index = -1;
-        for (int i = 0; i < bean.getFilteredList().size(); i++) {
-            String rowId = (bean.getFilteredList().get(i)).getRowId();
+        for (int i = 0; i < lov.getFilteredList().size(); i++) {
+            Object rowId = (lov.getFilteredList().get(i)).getId();
             if (rowId.equals(rowKey)) {
                 index = i;
                 break;
             }
         }
-
         setRowIndex(index);
     }
 
-    public void setRowIndex(int rowIndex) {
-        int size = bean.getFilteredList().size();
-        if (rowIndex < 0 || rowIndex >= size || size == 0) {
-            _row = null;
-            _rowIndex = -1;
+    public void setRowIndex(int index) {
+        int size = lov.getFilteredList().size();
+        if (index < 0 || index >= size || size == 0) {
+            row = null;
+            rowIndex = -1;
         } else {
-            _row = bean.getFilteredList().get(rowIndex);
-            _rowIndex = rowIndex;
+            row = lov.getFilteredList().get(index);
+            rowIndex = index;
         }
     }
 
     public int getRowIndex() {
-        return _rowIndex;
+        return rowIndex;
     }
 
-    public Object getRowData() {
-        return _row;
+    public SourceDataRow getRowData() {
+        return row;
     }
 
     public int getRowCount() {
-        return bean.getFilteredList().size();
+        return lov.getFilteredList().size();
     }
 
     public boolean isRowAvailable() {
-        return (_row != null);
+        return (row != null);
     }
 
-    public Object getRowData(int rowIndex) {
+    public SourceDataRow getRowData(int index) {
         int oldIndex = getRowIndex();
         try {
-            setRowIndex(rowIndex);
+            setRowIndex(index);
             return getRowData();
         } finally {
             setRowIndex(oldIndex);
@@ -94,7 +93,4 @@ class ListLovCollection extends CollectionModel {
     public void setWrappedData(Object data) {
         throw new UnsupportedOperationException();
     }
-
-    EmpDataRow _row = null;
-    int _rowIndex = -1;
 }

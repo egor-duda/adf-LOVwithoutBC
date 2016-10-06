@@ -8,8 +8,11 @@ import oracle.adf.view.rich.model.ConjunctionCriterion;
 import oracle.adf.view.rich.model.QueryDescriptor;
 
 public class QueryDescriptorImpl extends QueryDescriptor {
-    public QueryDescriptorImpl() {
-        _conjCriterion = new ConjunctionCriterionImpl();
+    
+    private ConjunctionCriterion conjCriterion;
+    
+    public QueryDescriptorImpl (String label) {
+        conjCriterion = new ConjunctionCriterionImpl(label);
     }
 
     public void addCriterion(String name) {
@@ -19,11 +22,11 @@ public class QueryDescriptorImpl extends QueryDescriptor {
     }
 
     public ConjunctionCriterion getConjunctionCriterion() {
-        return _conjCriterion;
+        return conjCriterion;
     }
 
     public void setConjunctionCriterion(ConjunctionCriterion criterion) {
-        _conjCriterion = criterion;
+        conjCriterion = criterion;
     }
 
     public String getName() {
@@ -43,6 +46,4 @@ public class QueryDescriptorImpl extends QueryDescriptor {
 
     public void setCurrentCriterion(AttributeCriterion attrCriterion) {
     }
-
-    ConjunctionCriterion _conjCriterion;
 }

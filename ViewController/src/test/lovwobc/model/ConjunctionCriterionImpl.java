@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import oracle.adf.view.rich.model.ConjunctionCriterion;
 
 public class ConjunctionCriterionImpl extends ConjunctionCriterion {
-    public ConjunctionCriterionImpl() {
+    public ConjunctionCriterionImpl (String label) {
         _criterionList = new ArrayList<oracle.adf.view.rich.model.Criterion>();
-        _criterionList.add(new AttributeCriterionImpl());
+        _criterionList.add(new AttributeCriterionImpl (label));
     }
 
     public ConjunctionCriterion.Conjunction getConjunction() {

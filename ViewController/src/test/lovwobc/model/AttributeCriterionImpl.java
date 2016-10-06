@@ -1,21 +1,27 @@
 package test.lovwobc.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import oracle.adf.view.rich.model.AttributeCriterion;
 import oracle.adf.view.rich.model.AttributeDescriptor;
 
 public class AttributeCriterionImpl extends AttributeCriterion {
-    public AttributeCriterionImpl() {
-        if (_values == null) {
-            _values = new ArrayList<Object>();
-            _values.add ("");
+    private String label;
+    List<Object> values;
+    
+    public AttributeCriterionImpl (String label) {
+        if (values == null) {
+            values = new ArrayList<Object>();
+            values.add ("");
         }
+        this.label = label;
     }
 
     public AttributeDescriptor getAttribute() {
-        return new AttributeDescriptorImpl();
+        return new AttributeDescriptorImpl(label);
     }
 
     public AttributeDescriptor.Operator getOperator() {
@@ -23,11 +29,11 @@ public class AttributeCriterionImpl extends AttributeCriterion {
     }
 
     public Map<String, AttributeDescriptor.Operator> getOperators() {
-        return null;
+        return Collections.emptyMap();
     }
 
     public java.util.List<? extends Object> getValues() {
-        return _values;
+        return values;
     }
 
     public boolean isRemovable() {
@@ -36,6 +42,4 @@ public class AttributeCriterionImpl extends AttributeCriterion {
 
     public void setOperator(AttributeDescriptor.Operator operator) {
     }
-
-    java.util.List<Object> _values;
 }
