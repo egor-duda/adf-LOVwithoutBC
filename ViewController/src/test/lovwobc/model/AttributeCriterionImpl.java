@@ -1,4 +1,4 @@
-package test.lovwobc.view;
+package test.lovwobc.model;
 
 import java.util.ArrayList;
 import java.util.Map;

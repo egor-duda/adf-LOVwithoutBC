@@ -1,4 +1,4 @@
-package test.lovwobc.view;
+package test.lovwobc.model;
 
 public class EmpDataRow {
     private String ename;

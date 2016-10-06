@@ -1,4 +1,4 @@
-package test.lovwobc.view;
+package test.lovwobc.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,6 +13,7 @@ import oracle.adf.view.rich.model.TableModel;
 
 import org.apache.myfaces.trinidad.model.RowKeySet;
 import org.apache.myfaces.trinidad.model.RowKeySetImpl;
+
 
 public class ListOfValuesModelImpl extends ListOfValuesModel {
     
@@ -78,6 +79,7 @@ public class ListOfValuesModelImpl extends ListOfValuesModel {
         return Collections.emptyList();
     }
 
+    @Override
     public void valueSelected(Object value) {
         EmpDataRow rowData = _getRowData(value);
         if(rowData != null) {
