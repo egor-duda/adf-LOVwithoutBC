@@ -7,10 +7,10 @@ import oracle.adf.view.rich.model.AttributeDescriptor;
 import oracle.adf.view.rich.model.ColumnDescriptor;
 
 public class ColumnDescriptorImpl extends ColumnDescriptor {
-    private String _name;
+    private AttributeDef attributeDef;
 
-    public ColumnDescriptorImpl(String name) {
-        _name = name;
+    public ColumnDescriptorImpl(AttributeDef attributeDef) {
+        this.attributeDef = attributeDef;
     }
 
     @Override
@@ -20,12 +20,12 @@ public class ColumnDescriptorImpl extends ColumnDescriptor {
 
     @Override
     public String getLabel() {
-        return _name.toUpperCase();
+        return attributeDef.getLabel();
     }
 
     @Override
     public String getName() {
-        return _name;
+        return attributeDef.getAttributeName();
     }
 
     @Override
@@ -45,7 +45,7 @@ public class ColumnDescriptorImpl extends ColumnDescriptor {
 
     @Override
     public String getDescription() {
-        return null;
+        return attributeDef.getDescription();
     }
 
     @Override
@@ -60,12 +60,12 @@ public class ColumnDescriptorImpl extends ColumnDescriptor {
 
     @Override
     public int getLength() {
-        return 0;
+        return attributeDef.getLength();
     }
 
     @Override
     public int getMaximumLength() {
-        return 0;
+        return attributeDef.getMaxLength();
     }
 
     @Override

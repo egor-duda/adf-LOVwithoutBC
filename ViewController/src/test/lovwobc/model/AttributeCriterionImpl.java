@@ -9,19 +9,19 @@ import oracle.adf.view.rich.model.AttributeCriterion;
 import oracle.adf.view.rich.model.AttributeDescriptor;
 
 public class AttributeCriterionImpl extends AttributeCriterion {
-    private String label;
-    List<Object> values;
+    private AttributeDescriptor attributeDescriptor;
+    private List<Object> values;
     
-    public AttributeCriterionImpl (String label) {
+    public AttributeCriterionImpl (AttributeDef attributeDef) {
         if (values == null) {
             values = new ArrayList<Object>();
             values.add ("");
         }
-        this.label = label;
+        attributeDescriptor = new AttributeDescriptorImpl(attributeDef);
     }
 
     public AttributeDescriptor getAttribute() {
-        return new AttributeDescriptorImpl(label);
+        return attributeDescriptor;
     }
 
     public AttributeDescriptor.Operator getOperator() {

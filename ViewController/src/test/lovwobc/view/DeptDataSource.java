@@ -4,9 +4,10 @@ import java.math.BigDecimal;
 
 import java.util.ArrayList;
 
-import java.util.Arrays;
 import java.util.List;
 
+import test.lovwobc.model.AttributeDef;
+import test.lovwobc.model.LabelledAttributeDef;
 import test.lovwobc.model.SourceDataRow;
 
 public class DeptDataSource {
@@ -45,13 +46,16 @@ public class DeptDataSource {
         departments.add (new Department (6, "Sales"));
         departments.add (new Department (7, "Support"));
     }
-    private static final List<String> departmentRowAttributes = Arrays.asList( new String [] { "deptName" });
+    private static final List<LabelledAttributeDef> departmentAttributes = new ArrayList <LabelledAttributeDef> ();
+    static {
+        departmentAttributes.add (new LabelledAttributeDef ("value", "Название отдела"));
+    }
     
     public static List<? extends SourceDataRow> getValues () {
         return departments;
     }
     
-    public static List <String> getAttributes () {
-        return departmentRowAttributes;
+    public static List <? extends AttributeDef> getAttributes () {
+        return departmentAttributes;
     }
 }

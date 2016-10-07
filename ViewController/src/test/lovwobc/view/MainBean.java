@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import test.lovwobc.model.BeanLOV;
+import test.lovwobc.model.AttributeDef;
 import test.lovwobc.model.SourceDataRow;
 
 public class MainBean {
@@ -16,8 +17,8 @@ public class MainBean {
     
     private BeanLOV empNameLOV = new BeanLOV () {
         @Override
-        public List<String> getAttributes() {
-            return EmpDataSource.getAttributes();
+        public List<? extends AttributeDef> getAttributes() {
+            return EmpDataSource.getAttributesNameOnly();
         }
         @Override
         public List<? extends SourceDataRow> getValues() {
@@ -31,7 +32,7 @@ public class MainBean {
     
     private BeanLOV deptNameLOV = new BeanLOV() {
         @Override
-        public List<String> getAttributes() {
+        public List<? extends AttributeDef> getAttributes() {
             return DeptDataSource.getAttributes();
         }
         @Override
@@ -52,7 +53,7 @@ public class MainBean {
     }
     
     private BeanLOV departmentEmpNameLOV = new BeanLOV () {
-        @Override public List<String> getAttributes() {
+        @Override public List<? extends AttributeDef> getAttributes() {
             return EmpDataSource.getAttributes();            
         }
         @Override public List<? extends SourceDataRow> getValues() {

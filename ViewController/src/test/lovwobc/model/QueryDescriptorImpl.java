@@ -11,8 +11,8 @@ public class QueryDescriptorImpl extends QueryDescriptor {
     
     private ConjunctionCriterion conjCriterion;
     
-    public QueryDescriptorImpl (String label) {
-        conjCriterion = new ConjunctionCriterionImpl(label);
+    public QueryDescriptorImpl (AttributeDef attributeDef) {
+        conjCriterion = new ConjunctionCriterionImpl(attributeDef);
     }
 
     public void addCriterion(String name) {

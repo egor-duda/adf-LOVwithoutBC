@@ -23,7 +23,7 @@ public abstract class BeanLOV {
     private ListLovCollection listModel = new ListLovCollection(this);
     private List<SourceDataRow> filteredList = new ArrayList<SourceDataRow>();
 
-    protected abstract List<String> getAttributes();    
+    protected abstract List<? extends AttributeDef> getAttributes();    
     protected abstract List<? extends SourceDataRow> getValues();
     
     protected boolean valueMatch (String userInput, String valueFromLOV) {

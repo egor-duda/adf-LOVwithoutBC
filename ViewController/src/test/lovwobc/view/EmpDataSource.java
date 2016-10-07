@@ -4,9 +4,10 @@ import java.math.BigDecimal;
 
 import java.util.ArrayList;
 
-import java.util.Arrays;
 import java.util.List;
 
+import test.lovwobc.model.AttributeDef;
+import test.lovwobc.model.LabelledAttributeDef;
 import test.lovwobc.model.SourceDataRow;
 
 public class EmpDataSource {
@@ -50,7 +51,14 @@ public class EmpDataSource {
         employees.add (new Employee (5, "Cathy", 1));
         employees.add (new Employee (6, "Denis", 3));
     }
-    private static final List<String> employeeRowAttributes = Arrays.asList( new String [] { "empName" });
+    private static final List<LabelledAttributeDef> employeeAttributes = new ArrayList <LabelledAttributeDef> ();
+    private static final List<LabelledAttributeDef> employeeAttributesNameOnly = new ArrayList <LabelledAttributeDef> ();
+    static {
+        employeeAttributes.add (new LabelledAttributeDef ("value", "Имя сотрудника"));
+        employeeAttributes.add (new LabelledAttributeDef ("deptId", "Номер Отдела"));
+        
+        employeeAttributesNameOnly.add (new LabelledAttributeDef ("value", "Имя сотрудника"));
+    }
     
     public static List<? extends SourceDataRow> getValues () {
         return employees;
@@ -66,7 +74,11 @@ public class EmpDataSource {
         return retVal;
     }    
     
-    public static List <String> getAttributes () {
-        return employeeRowAttributes;
+    public static List <? extends AttributeDef> getAttributes () {
+        return employeeAttributes;
     }
+    
+    public static List <? extends AttributeDef> getAttributesNameOnly () {
+        return employeeAttributesNameOnly;
+    }    
 }

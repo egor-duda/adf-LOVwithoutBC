@@ -7,11 +7,11 @@ import oracle.adf.view.rich.model.AttributeDescriptor;
 
 public class AttributeDescriptorImpl extends AttributeDescriptor {
     
-    private String label;
+    private AttributeDef attributeDef;
 
-    public AttributeDescriptorImpl(String label) {
+    public AttributeDescriptorImpl(AttributeDef attributeDef) {
         super();
-        this.label = label;
+        this.attributeDef = attributeDef;
     }
 
     public AttributeDescriptor.ComponentType getComponentType() {
@@ -19,7 +19,7 @@ public class AttributeDescriptorImpl extends AttributeDescriptor {
     }
 
     public String getDescription() {
-        return null;
+        return attributeDef.getDescription();
     }
 
     public String getFormat() {
@@ -27,15 +27,15 @@ public class AttributeDescriptorImpl extends AttributeDescriptor {
     }
 
     public String getLabel() {
-        return label;
+        return attributeDef.getLabel();
     }
 
     public int getLength() {
-        return 0;
+        return attributeDef.getLength();
     }
 
     public int getMaximumLength() {
-        return 0;
+        return attributeDef.getMaxLength();
     }
 
     public Object getModel() {

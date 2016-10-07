@@ -10,11 +10,11 @@ import org.apache.myfaces.trinidad.model.CollectionModel;
 
 public class TableModelImpl extends TableModel {
     
-    private List<String> attributes;
+    private List<? extends AttributeDef> attributes;
     private CollectionModel collectionModel;
     private List<ColumnDescriptor> descriptors;
     
-    public TableModelImpl(CollectionModel collectionModel, List<String> attributes) {
+    public TableModelImpl(CollectionModel collectionModel, List<? extends AttributeDef> attributes) {
         assert (collectionModel != null);
         this.attributes = attributes;
         this.collectionModel = collectionModel;
@@ -29,7 +29,7 @@ public class TableModelImpl extends TableModel {
     public List<ColumnDescriptor> getColumnDescriptors() {
         if (descriptors == null) {
             descriptors = new ArrayList<ColumnDescriptor>(attributes.size());
-            for (String attr : attributes) {
+            for (AttributeDef attr : attributes) {
                 descriptors.add(new ColumnDescriptorImpl(attr));
             }
         }

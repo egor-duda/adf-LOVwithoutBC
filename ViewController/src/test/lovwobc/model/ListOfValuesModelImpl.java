@@ -36,7 +36,7 @@ public class ListOfValuesModelImpl extends ListOfValuesModel {
         ArrayList<Object> retVal = new ArrayList<Object> ();
         for (SourceDataRow row: lov.getValues()) {
             Map<String, Object> item = new HashMap<String, Object>(1);
-            item.put(lov.getAttributes().get(0), row.getValue());
+            item.put(lov.getAttributes().get(0).getAttributeName(), row.getValue());
             retVal.add (item);
         }
         return retVal;
