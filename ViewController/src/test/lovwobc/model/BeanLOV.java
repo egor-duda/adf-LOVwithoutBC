@@ -32,6 +32,15 @@ public abstract class BeanLOV {
         return valueFromLOV.toUpperCase().startsWith(userInput.toUpperCase());
     }
 
+    public void findById (Object id) {
+        for (SourceDataRow row: getValues()) {
+            if (row.getId().equals(id)) {
+                setSelectedValue(row);
+                return;
+            }
+        }
+    }
+
     protected void setSelectedValue(SourceDataRow rowData) {
         setId(rowData.getId());
         setValue(rowData.getValue());
