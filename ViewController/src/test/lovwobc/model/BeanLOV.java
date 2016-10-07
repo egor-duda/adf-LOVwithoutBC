@@ -27,8 +27,8 @@ public abstract class BeanLOV {
     public abstract List<? extends SourceDataRow> getValues();
 
     public void setSelectedValue(SourceDataRow rowData) {
-        id = rowData.getId();
-        value = rowData.getValue();
+        setId(rowData.getId());
+        setValue(rowData.getValue());
     };
     
     public List<SourceDataRow> getFilteredList() {
@@ -99,15 +99,25 @@ public abstract class BeanLOV {
         return retVal;
     }
 
+    public void setId (Object id) {
+        this.id = id;
+    }
+
     public Object getId() {
         return id;
     }
-
+    
     public void setValue(String value) {
         this.value = value;
     }
 
     public String getValue() {
         return value;
+    }
+    
+    public void reset () {
+        setId(null);
+        setValue(null);
+        filterList(null);
     }
 }

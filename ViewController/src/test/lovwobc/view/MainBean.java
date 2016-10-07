@@ -35,6 +35,13 @@ public class MainBean {
         public List<? extends SourceDataRow> getValues() {
             return DeptDataSource.getValues();
         }
+
+        public void setId(Object id) {
+            if (getId() != null && !getId().equals(id)) {
+                departmentEmpNameLOV.reset();
+            }
+            super.setId(id);
+        }
     };
     
     public BeanLOV getDeptNameLOV () {

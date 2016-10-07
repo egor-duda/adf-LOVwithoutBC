@@ -18,7 +18,8 @@
             <af:inputListOfValues label="Employee in department" popupTitle="Search and Result Dialog" id="ilov3"
                                   model="#{viewScope.mainBean.departmentEmpNameLOV.listOfValuesModel}"
                                   value="#{viewScope.mainBean.departmentEmpNameLOV.value}"
-                                  validator="#{viewScope.mainBean.departmentEmpNameLOV.validate}" autoSubmit="true">
+                                  validator="#{viewScope.mainBean.departmentEmpNameLOV.validate}" autoSubmit="true"
+                                  partialTriggers="ilov2">
                 <af:autoSuggestBehavior suggestedItems="#{viewScope.mainBean.departmentEmpNameLOV.suggestedItems}"/>
             </af:inputListOfValues>
             
