@@ -38,7 +38,7 @@ public abstract class BeanLOV {
 
     public void findById (Object id) {
         for (SourceDataRow row: getValues()) {
-            if (row.getId().equals(id)) {
+            if (id == null && row.getId() == null || id != null && id.equals (row.getId())) {
                 setSelectedValue(row);
                 return;
             }

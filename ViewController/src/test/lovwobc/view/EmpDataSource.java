@@ -16,10 +16,10 @@ public class EmpDataSource {
         private BigDecimal deptId;
         private String empName;
 
-        public Employee(int empId, String empName, int deptId) {
+        public Employee(Integer empId, String empName, Integer deptId) {
             super();
-            this.empId = new BigDecimal (empId);
-            this.deptId = new BigDecimal (deptId);
+            this.empId = empId == null ? null : new BigDecimal (empId);
+            this.deptId = deptId == null ? null : new BigDecimal (deptId);
             this.empName = empName;
         }
 
@@ -48,8 +48,8 @@ public class EmpDataSource {
         employees.add (new Employee (2, "Adam", 1));
         employees.add (new Employee (3, "Ben", 2));
         employees.add (new Employee (4, "Carol", 1));
-        employees.add (new Employee (5, "Cathy", 1));
-        employees.add (new Employee (6, "Denis", 3));
+        employees.add (new Employee (5, "Cathy", null));
+        employees.add (new Employee (6, "Denis", null));
     }
     private static final List<LabelledAttributeDef> employeeAttributes = new ArrayList <LabelledAttributeDef> ();
     private static final List<LabelledAttributeDef> employeeAttributesNameOnly = new ArrayList <LabelledAttributeDef> ();
@@ -67,7 +67,8 @@ public class EmpDataSource {
     static List<? extends SourceDataRow> getValues(Object deptId) {
         ArrayList<Employee> retVal = new ArrayList<Employee> ();
         for (Employee employee: employees) {
-            if (employee.getDeptId().equals(deptId)) {
+            if (deptId == null && employee.getDeptId() == null ||
+                deptId != null && deptId.equals(employee.getDeptId())) {
                 retVal.add(employee);
             }
         }

@@ -19,20 +19,11 @@ class ListLovCollection extends CollectionModel {
         return (row != null ? row.getId() : null);
     }
 
-    /**
-     * Finds the row with the matching key and makes it current
-     * @param rowKey the rowKey, previously obtained from {@link #getRowKey}.
-     */
     public void setRowKey(Object rowKey) {
-        if (rowKey == null) {
-            row = null;
-            return;
-        }
-
         int index = -1;
         for (int i = 0; i < lov.getFilteredList().size(); i++) {
             Object rowId = (lov.getFilteredList().get(i)).getId();
-            if (rowId.equals(rowKey)) {
+            if (rowKey == null && rowId == null || rowKey != null && rowKey.equals(rowId)) {
                 index = i;
                 break;
             }

@@ -45,7 +45,7 @@ public class MainBean {
         
         @Override
         public void setId(Object id) {
-            if (getId() != null && !getId().equals(id)) {
+            if (id == null && getId() != null || id != null && !id.equals(getId())) {
                 departmentEmpNameLOV.reset();
             }
             super.setId(id);

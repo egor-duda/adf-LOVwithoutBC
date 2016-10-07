@@ -15,9 +15,9 @@ public class DeptDataSource {
         private BigDecimal deptId;
         private String deptName;
 
-        public Department(int deptId, String deptName) {
+        public Department(Integer deptId, String deptName) {
             super();
-            this.deptId = new BigDecimal (deptId);
+            this.deptId = (deptId == null ? null : new BigDecimal (deptId));
             this.deptName = deptName;
         }
 
@@ -38,6 +38,7 @@ public class DeptDataSource {
     
     private static ArrayList<Department> departments = new ArrayList<Department> ();
     static {
+        departments.add (new Department (null, "--none--"));
         departments.add (new Department (1, "Accounting"));
         departments.add (new Department (2, "Administration"));
         departments.add (new Department (3, "IT"));
