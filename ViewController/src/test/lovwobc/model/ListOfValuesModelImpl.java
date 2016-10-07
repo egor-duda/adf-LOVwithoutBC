@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import java.util.Map;
@@ -20,6 +22,11 @@ import org.apache.myfaces.trinidad.model.RowKeySetImpl;
 
 public class ListOfValuesModelImpl extends ListOfValuesModel {
 
+    LinkedHashMap<SourceDataRow, Boolean> recentItems = new LinkedHashMap<SourceDataRow, Boolean> () {
+        protected boolean removeEldestEntry(Map.Entry<SourceDataRow, Boolean> eldest) {
+            return size() > lov.getMRUSize();
+        }
+    };
     private QueryDescriptor queryDescriptor;
     private BeanLOV lov;    
     
@@ -27,10 +34,6 @@ public class ListOfValuesModelImpl extends ListOfValuesModel {
         this.lov = lov;
     }
     
-    /**
-     * Not applicable as items are only supported in comboLOV
-     * @return
-     */
     @Override
     public List<? extends Object> getItems() {
         ArrayList<Object> retVal = new ArrayList<Object> ();
@@ -42,22 +45,29 @@ public class ListOfValuesModelImpl extends ListOfValuesModel {
         return retVal;
     }
 
-    /**
-     * Returns null for now.
-     * @return
-     */
     @Override
     public QueryModel getQueryModel() {
         return new QueryModelImpl();
     }
 
-    /**
-     * Not applicable as items are only supported in comboLOV
-     * @return
-     */
     @Override
     public List<? extends Object> getRecentItems() {
-        return new ArrayList<Object>();
+        LinkedList<Object> retVal = new LinkedList<Object> ();
+        if (recentItems.size() <= 0) return retVal;
+        for (Map.Entry<SourceDataRow, Boolean> item: recentItems.entrySet()) {
+            Map<String, Object> retItem = new HashMap<String, Object>(1);
+            retItem.put(lov.getAttributes().get(0).getAttributeName(), item.getKey().getValue());
+            retVal.addFirst(retItem);
+        }
+        // work around apparent bug in ADF -- last item in recentItems list is rendered 
+        // as separator, has height of 3px and cannot be selected. Add dummy null item to 
+        // recentItems list, to serve as separator
+        if (retVal.size() > 0) {
+            Map<String, Object> retItem = new HashMap<String, Object>(1);
+            retItem.put(lov.getAttributes().get(0).getAttributeName(), null);
+            retVal.addLast(retItem);
+        }
+        return retVal;
     }
 
     @Override
@@ -95,7 +105,9 @@ public class ListOfValuesModelImpl extends ListOfValuesModel {
     public void valueSelected(Object value) {
         SourceDataRow rowData = getRowData(value);
         if(rowData != null) {
-            lov.setSelectedValue(rowData);
+            lov.setSelectedValue (rowData);
+            recentItems.remove (rowData); // make last selected item last-inserted
+            recentItems.put (rowData,true);
         }
     }
 
@@ -125,7 +137,7 @@ public class ListOfValuesModelImpl extends ListOfValuesModel {
             if (item instanceof HashMap<?,?>) {
                 HashMap<String,Object> itemMap = (HashMap<String,Object>)item;
                 for (SourceDataRow row: lov.getValues()) {
-                    if (row.getValue().equals(itemMap.get(lov.getAttributes().get(0)))) {
+                    if (row.getValue().equals(itemMap.get(lov.getAttributes().get(0).getAttributeName()))) {
                         return row;
                     }
                 }

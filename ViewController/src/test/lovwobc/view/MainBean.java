@@ -17,11 +17,11 @@ public class MainBean {
     
     private BeanLOV empNameLOV = new BeanLOV () {
         @Override
-        public List<? extends AttributeDef> getAttributes() {
+        protected List<? extends AttributeDef> getAttributes() {
             return EmpDataSource.getAttributesNameOnly();
         }
         @Override
-        public List<? extends SourceDataRow> getValues() {
+        protected List<? extends SourceDataRow> getValues() {
             return EmpDataSource.getValues();
         }        
     };
@@ -32,14 +32,18 @@ public class MainBean {
     
     private BeanLOV deptNameLOV = new BeanLOV() {
         @Override
-        public List<? extends AttributeDef> getAttributes() {
+        protected List<? extends AttributeDef> getAttributes() {
             return DeptDataSource.getAttributes();
         }
-        @Override
-        public List<? extends SourceDataRow> getValues() {
+        @Override 
+        protected List<? extends SourceDataRow> getValues() {
             return DeptDataSource.getValues();
         }
-
+        
+        @Override 
+        protected int getMRUSize () { return 3; }
+        
+        @Override
         public void setId(Object id) {
             if (getId() != null && !getId().equals(id)) {
                 departmentEmpNameLOV.reset();
@@ -53,10 +57,12 @@ public class MainBean {
     }
     
     private BeanLOV departmentEmpNameLOV = new BeanLOV () {
-        @Override public List<? extends AttributeDef> getAttributes() {
+        @Override
+        protected List<? extends AttributeDef> getAttributes() {
             return EmpDataSource.getAttributes();            
         }
-        @Override public List<? extends SourceDataRow> getValues() {
+        @Override
+        protected List<? extends SourceDataRow> getValues() {
             return EmpDataSource.getValues(deptNameLOV.getId());
         }
     };

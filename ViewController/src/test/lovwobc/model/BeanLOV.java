@@ -15,6 +15,8 @@ import oracle.adf.view.rich.model.ListOfValuesModel;
 
 public abstract class BeanLOV {
     
+    private static final int DEFAULT_MRU_SIZE = 0;
+    
     private Object id;
     private String value;
     
@@ -25,6 +27,8 @@ public abstract class BeanLOV {
 
     protected abstract List<? extends AttributeDef> getAttributes();    
     protected abstract List<? extends SourceDataRow> getValues();
+    
+    protected int getMRUSize () { return DEFAULT_MRU_SIZE; }
     
     protected boolean valueMatch (String userInput, String valueFromLOV) {
         if (valueFromLOV == null) return true;
