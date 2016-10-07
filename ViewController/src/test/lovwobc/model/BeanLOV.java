@@ -23,15 +23,21 @@ public abstract class BeanLOV {
     private ListLovCollection listModel = new ListLovCollection(this);
     private List<SourceDataRow> filteredList = new ArrayList<SourceDataRow>();
 
-    public abstract List<String> getAttributes();    
-    public abstract List<? extends SourceDataRow> getValues();
+    protected abstract List<String> getAttributes();    
+    protected abstract List<? extends SourceDataRow> getValues();
+    
+    protected boolean valueMatch (String userInput, String valueFromLOV) {
+        if (valueFromLOV == null) return true;
+        if (userInput == null) return false;
+        return valueFromLOV.toUpperCase().startsWith(userInput.toUpperCase());
+    }
 
-    public void setSelectedValue(SourceDataRow rowData) {
+    protected void setSelectedValue(SourceDataRow rowData) {
         setId(rowData.getId());
         setValue(rowData.getValue());
     };
     
-    public List<SourceDataRow> getFilteredList() {
+    protected List<SourceDataRow> getFilteredList() {
         return filteredList;
     }
     
@@ -41,16 +47,15 @@ public abstract class BeanLOV {
         return listOfValuesModel;
     }
     
-    public ListLovCollection getListModel () {
+    ListLovCollection getListModel () {
         return listModel;
     }
     
-    
-    public void filterList(String aValue) {
+    void filterList(String aValue) {
         filteredList.clear();
         if (aValue == null) return;
         for (SourceDataRow row : getValues()) {
-            if (row.getValue().startsWith(aValue)) {
+            if (valueMatch(aValue, row.getValue())) {
                 filteredList.add (row);
             }
         }
