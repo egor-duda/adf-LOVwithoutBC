@@ -109,7 +109,8 @@ public class ListOfValuesModelImpl extends ListOfValuesModel {
     }
 
     private SourceDataRow getRowData(Object selectedRowKey) {
-        if (selectedRowKey != null && selectedRowKey instanceof RowKeySet) {
+        if (selectedRowKey == null) return null;
+        if (selectedRowKey instanceof RowKeySet) {
             Iterator<Object> selection = ((RowKeySet) selectedRowKey).iterator();
             while (selection.hasNext()) {
                 Object rowKey = selection.next();
@@ -118,6 +119,16 @@ public class ListOfValuesModelImpl extends ListOfValuesModel {
                 SourceDataRow rowData = lov.getListModel().getRowData();
                 lov.getListModel().setRowKey(oldRowKey);
                 return rowData;
+            }
+        } else if (selectedRowKey instanceof List<?>) {
+            Object item = ((List<?>)selectedRowKey).get(0);
+            if (item instanceof HashMap<?,?>) {
+                HashMap<String,Object> itemMap = (HashMap<String,Object>)item;
+                for (SourceDataRow row: lov.getValues()) {
+                    if (row.getValue().equals(itemMap.get(lov.getAttributes().get(0)))) {
+                        return row;
+                    }
+                }
             }
         }
         return null;
