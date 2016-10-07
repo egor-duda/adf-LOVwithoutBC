@@ -1,7 +1,6 @@
 package test.lovwobc.view;
 
-import java.math.BigDecimal;
-
+import java.util.Collections;
 import java.util.List;
 
 import test.lovwobc.model.BeanLOV;
@@ -12,23 +11,7 @@ public class MainBean {
         super();
     }
     
-    private String empName;
-    private BigDecimal empId;
-
-    public void setEmpName(String empName) {
-        this.empName = empName;
-    }
-
-    public String getEmpName() {
-        return empName;
-    }
-
-    public class EmpNameLOV extends BeanLOV {
-        @Override
-        public void setSelectedValue(SourceDataRow rowData) {
-            empName = rowData.getValue();
-            empId = (BigDecimal)rowData.getId();
-        }
+    private BeanLOV empNameLOV = new BeanLOV () {
         @Override
         public List<String> getAttributes() {
             return EmpDataSource.getAttributes();
@@ -36,32 +19,14 @@ public class MainBean {
         @Override
         public List<? extends SourceDataRow> getValues() {
             return EmpDataSource.getValues();
-        }
-    }
-    
-    private BeanLOV empNameLOV = new EmpNameLOV ();
+        }        
+    };
 
     public BeanLOV getEmpNameLOV() {
         return empNameLOV;
     }
     
-    private String deptName;
-    private BigDecimal deptId;
-    
-    public void setDeptName(String deptName) {
-        this.deptName = deptName;
-    }
-
-    public String getDeptName() {
-        return deptName;
-    }
-
-    public class DeptNameLOV extends BeanLOV {
-        @Override
-        public void setSelectedValue(SourceDataRow rowData) {
-            deptName = rowData.getValue();
-            deptId = (BigDecimal)rowData.getId();
-        }
+    private BeanLOV deptNameLOV = new BeanLOV() {
         @Override
         public List<String> getAttributes() {
             return DeptDataSource.getAttributes();
@@ -70,12 +35,22 @@ public class MainBean {
         public List<? extends SourceDataRow> getValues() {
             return DeptDataSource.getValues();
         }
-    }
+    };
     
-    private DeptNameLOV deptNameLOV = new DeptNameLOV();
-    
-    public DeptNameLOV getDeptNameLOV () {
+    public BeanLOV getDeptNameLOV () {
         return deptNameLOV;
     }
-
+    
+    private BeanLOV departmentEmpNameLOV = new BeanLOV () {
+        @Override public List<String> getAttributes() {
+            return EmpDataSource.getAttributes();            
+        }
+        @Override public List<? extends SourceDataRow> getValues() {
+            return EmpDataSource.getValues(deptNameLOV.getId());
+        }
+    };
+        
+    public BeanLOV getDepartmentEmpNameLOV () {
+        return departmentEmpNameLOV;
+    }
 }

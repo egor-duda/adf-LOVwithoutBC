@@ -14,15 +14,23 @@ import javax.faces.validator.ValidatorException;
 import oracle.adf.view.rich.model.ListOfValuesModel;
 
 public abstract class BeanLOV {
+    
+    private Object id;
+    private String value;
+    
     private ListOfValuesModel listOfValuesModel;
 
     private ListLovCollection listModel = new ListLovCollection(this);
     private List<SourceDataRow> filteredList = new ArrayList<SourceDataRow>();
 
-    public abstract void setSelectedValue(SourceDataRow rowData);
     public abstract List<String> getAttributes();    
     public abstract List<? extends SourceDataRow> getValues();
 
+    public void setSelectedValue(SourceDataRow rowData) {
+        id = rowData.getId();
+        value = rowData.getValue();
+    };
+    
     public List<SourceDataRow> getFilteredList() {
         return filteredList;
     }
@@ -89,5 +97,17 @@ public abstract class BeanLOV {
             retVal.add (new SelectItem (row.getValue()));
         }
         return retVal;
+    }
+
+    public Object getId() {
+        return id;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
     }
 }

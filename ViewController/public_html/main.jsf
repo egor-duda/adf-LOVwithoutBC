@@ -5,16 +5,23 @@
         <af:form id="f1">
             <af:inputListOfValues label="Employee" popupTitle="Search and Result Dialog" id="ilov1"
                                   model="#{viewScope.mainBean.empNameLOV.listOfValuesModel}"
-                                  value="#{viewScope.mainBean.empName}"
+                                  value="#{viewScope.mainBean.empNameLOV.value}"
                                   validator="#{viewScope.mainBean.empNameLOV.validate}" autoSubmit="true">
                 <af:autoSuggestBehavior suggestedItems="#{viewScope.mainBean.empNameLOV.suggestedItems}"/>
             </af:inputListOfValues>
             <af:inputComboboxListOfValues label="Department" popupTitle="Search and Result Dialog" id="ilov2"
                                   model="#{viewScope.mainBean.deptNameLOV.listOfValuesModel}"
-                                  value="#{viewScope.mainBean.deptName}"
+                                  value="#{viewScope.mainBean.deptNameLOV.value}"
                                   validator="#{viewScope.mainBean.deptNameLOV.validate}" autoSubmit="true">
                 <af:autoSuggestBehavior suggestedItems="#{viewScope.mainBean.deptNameLOV.suggestedItems}"/>
             </af:inputComboboxListOfValues>
+            <af:inputListOfValues label="Employee in department" popupTitle="Search and Result Dialog" id="ilov3"
+                                  model="#{viewScope.mainBean.departmentEmpNameLOV.listOfValuesModel}"
+                                  value="#{viewScope.mainBean.departmentEmpNameLOV.value}"
+                                  validator="#{viewScope.mainBean.departmentEmpNameLOV.validate}" autoSubmit="true">
+                <af:autoSuggestBehavior suggestedItems="#{viewScope.mainBean.departmentEmpNameLOV.suggestedItems}"/>
+            </af:inputListOfValues>
+            
             <af:commandButton text="commandButton 1" id="cb1"/>
         </af:form>
     </af:document>
