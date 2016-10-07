@@ -1,6 +1,7 @@
 package test.lovwobc.view;
 
-import java.util.Collections;
+import java.math.BigDecimal;
+
 import java.util.List;
 
 import test.lovwobc.model.BeanLOV;
@@ -9,6 +10,8 @@ import test.lovwobc.model.SourceDataRow;
 public class MainBean {
     public MainBean() {
         super();
+        deptNameLOV.findById (new BigDecimal(1));
+        empNameLOV.findById (new BigDecimal(4));
     }
     
     private BeanLOV empNameLOV = new BeanLOV () {
