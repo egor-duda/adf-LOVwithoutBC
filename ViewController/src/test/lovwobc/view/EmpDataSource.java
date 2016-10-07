@@ -12,11 +12,13 @@ import test.lovwobc.model.SourceDataRow;
 public class EmpDataSource {
     public static class Employee implements SourceDataRow {
         private BigDecimal empId;
+        private BigDecimal deptId;
         private String empName;
 
-        public Employee(int empId, String empName) {
+        public Employee(int empId, String empName, int deptId) {
             super();
             this.empId = new BigDecimal (empId);
+            this.deptId = new BigDecimal (deptId);
             this.empName = empName;
         }
 
@@ -33,22 +35,36 @@ public class EmpDataSource {
         public String getEmpName () {
             return empName;
         }
+
+        public BigDecimal getDeptId() {
+            return deptId;
+        }
     }
     
     private static ArrayList<Employee> employees = new ArrayList<Employee> ();
     static {
-        employees.add (new Employee (1, "Abdul"));
-        employees.add (new Employee (2, "Adam"));
-        employees.add (new Employee (3, "Ben"));
-        employees.add (new Employee (4, "Carol"));
-        employees.add (new Employee (5, "Cathy"));
-        employees.add (new Employee (6, "Denis"));
+        employees.add (new Employee (1, "Abdul", 2));
+        employees.add (new Employee (2, "Adam", 1));
+        employees.add (new Employee (3, "Ben", 2));
+        employees.add (new Employee (4, "Carol", 1));
+        employees.add (new Employee (5, "Cathy", 1));
+        employees.add (new Employee (6, "Denis", 3));
     }
     private static final List<String> employeeRowAttributes = Arrays.asList( new String [] { "empName" });
     
     public static List<? extends SourceDataRow> getValues () {
         return employees;
     }
+    
+    static List<? extends SourceDataRow> getValues(Object deptId) {
+        ArrayList<Employee> retVal = new ArrayList<Employee> ();
+        for (Employee employee: employees) {
+            if (employee.getDeptId().equals(deptId)) {
+                retVal.add(employee);
+            }
+        }
+        return retVal;
+    }    
     
     public static List <String> getAttributes () {
         return employeeRowAttributes;
